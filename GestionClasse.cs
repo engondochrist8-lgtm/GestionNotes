@@ -30,5 +30,11 @@ namespace GestionNotes
                 e.Matricule.Equals(critere, StringComparison.OrdinalIgnoreCase) ||
                 e.Nom.Equals(critere, StringComparison.OrdinalIgnoreCase));
         }
+
+        public List<Etudiant> ObtenirAdmis() =>
+            etudiants.Where(e => e.EstAdmis).ToList();
+
+        public List<Etudiant> ObtenirRattrapage() =>
+            etudiants.Where(e => e.Note.HasValue && e.Note.Value < 10).ToList();
     }
 }

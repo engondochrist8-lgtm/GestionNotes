@@ -47,5 +47,29 @@ namespace GestionNotes
         {
             return etudiants.Remove(e);
         }
+
+        // Calcule moyenne, meilleure/plus faible note, taux de réussite et médiane
+        public (double moyenne, Etudiant meilleur, Etudiant plusFaible, double tauxReussite, double mediane) CalculerStatistiques()
+        {
+            var notes = etudiants.Where(e => e.Note.HasValue).ToList();
+            if (notes.Count == 0)
+                return (0, null, null, 0, 0);
+
+            double moyenne = notes.Average(e => e.Note.Value);
+            Etudiant meilleur = notes.OrderByDescending(e => e.Note.Value).First();
+            Etudiant plusFaible = notes.OrderBy(e => e.Note.Value).First();
+            int admis = notes.Count(e => e.EstAdmis);
+            double taux = (double)admis / notes.Count * 100;
+
+            var notesTriees = notes.Select(e => e.Note.Value).OrderBy(n => n).ToList();
+            double mediane;
+            int milieu = notesTriees.Count / 2;
+            if (notesTriees.Count % 2 == 0)
+                mediane = (notesTriees[milieu - 1] + notesTriees[milieu]) / 2.0;
+            else
+                mediane = notesTriees[milieu];
+
+            return (moyenne, meilleur, plusFaible, taux, mediane);
+        }
     }
 }

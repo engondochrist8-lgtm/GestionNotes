@@ -19,6 +19,8 @@ namespace GestionNotes
 
                 switch (choix)
                 {
+                    case 1: SaisirEtudiants(); break;
+                    case 2: SaisirModifierNote(); break;
                     case 10:
                         quitter = true;
                         Console.WriteLine("\nMerci d'avoir utilisé le système de gestion des notes. À bientôt !");
@@ -64,6 +66,84 @@ namespace GestionNotes
                     return valeur;
                 Console.WriteLine($"Entrée invalide. Veuillez entrer un nombre entre {min} et {max}.");
             }
+        }
+
+        static double LireNote()
+        {
+            double note;
+            while (true)
+            {
+                Console.Write("Note (0 à 20) : ");
+                string saisie = Console.ReadLine();
+                if (double.TryParse(saisie, out note) && note >= 0 && note <= 20)
+                    return note;
+                Console.WriteLine("Note invalide. Elle doit être comprise entre 0 et 20.");
+            }
+        }
+
+        static string LireChaineNonVide(string message)
+        {
+            string valeur;
+            do
+            {
+                Console.Write(message);
+                valeur = Console.ReadLine()?.Trim();
+                if (string.IsNullOrEmpty(valeur))
+                    Console.WriteLine("Ce champ ne peut pas être vide.");
+            } while (string.IsNullOrEmpty(valeur));
+            return valeur;
+        }
+
+        static void SaisirEtudiants()
+        {
+            Console.Clear();
+            Console.WriteLine("=== SAISIR LES ÉTUDIANTS ===\n");
+            int nombre = LireEntier("Combien d'étudiants voulez-vous ajouter ? ", 1, 1000);
+
+            for (int i = 1; i <= nombre; i++)
+            {
+                Console.WriteLine($"\n--- Étudiant {i}/{nombre} ---");
+                string nom = LireChaineNonVide("Nom : ");
+                string prenom = LireChaineNonVide("Prénom : ");
+
+                string matricule;
+                while (true)
+                {
+                    matricule = LireChaineNonVide("Matricule : ");
+                    if (!gestion.MatriculeExiste(matricule))
+                        break;
+                    Console.WriteLine("Ce matricule existe déjà. Veuillez en saisir un autre.");
+                }
+
+                gestion.AjouterEtudiant(new Etudiant(nom, prenom, matricule));
+                Console.WriteLine("Étudiant ajouté avec succès.");
+            }
+        }
+
+        static void SaisirModifierNote()
+        {
+            Console.Clear();
+            Console.WriteLine("=== SAISIR / MODIFIER UNE NOTE ===\n");
+
+            if (gestion.NombreEtudiants == 0)
+            {
+                Console.WriteLine("Aucun étudiant enregistré.");
+                return;
+            }
+
+            string critere = LireChaineNonVide("Nom ou matricule de l'étudiant : ");
+            Etudiant e = gestion.TrouverParNomOuMatricule(critere);
+
+            if (e == null)
+            {
+                Console.WriteLine("Étudiant introuvable.");
+                return;
+            }
+
+            Console.WriteLine($"Étudiant trouvé : {e.Prenom} {e.Nom} ({e.Matricule})");
+            double note = LireNote();
+            e.Note = note;
+            Console.WriteLine("Note enregistrée avec succès.");
         }
     }
 }

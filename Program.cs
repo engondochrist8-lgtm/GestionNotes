@@ -25,6 +25,9 @@ namespace GestionNotes
                     case 4: AfficherAdmis(); break;
                     case 5: AfficherRattrapage(); break;
                     case 6: RechercherEtudiant(); break;
+                    case 7: AfficherStatistiques(); break;
+                    case 8: TrierEtudiants(); break;
+                    case 9: SupprimerEtudiant(); break;
                     case 10:
                         quitter = true;
                         Console.WriteLine("\nMerci d'avoir utilisé le système de gestion des notes. À bientôt !");
@@ -233,6 +236,84 @@ namespace GestionNotes
             {
                 Console.WriteLine("\nÉtudiant trouvé :");
                 Console.WriteLine(e);
+            }
+        }
+
+        static void AfficherStatistiques()
+        {
+            Console.Clear();
+            Console.WriteLine("=== STATISTIQUES DE LA CLASSE ===\n");
+
+            var stats = gestion.CalculerStatistiques();
+
+            if (stats.meilleur == null)
+            {
+                Console.WriteLine("Aucune note enregistrée pour le moment.");
+                return;
+            }
+
+            Console.WriteLine($"Moyenne générale   : {stats.moyenne:0.00}/20");
+            Console.WriteLine($"Médiane            : {stats.mediane:0.00}/20");
+            Console.WriteLine($"Meilleure note     : {stats.meilleur.Note:0.00} ({stats.meilleur.Prenom} {stats.meilleur.Nom})");
+            Console.WriteLine($"Plus faible note   : {stats.plusFaible.Note:0.00} ({stats.plusFaible.Prenom} {stats.plusFaible.Nom})");
+            Console.WriteLine($"Taux de réussite   : {stats.tauxReussite:0.0} %");
+        }
+
+        static void TrierEtudiants()
+        {
+            Console.Clear();
+            Console.WriteLine("=== TRIER LES ÉTUDIANTS ===\n");
+
+            if (gestion.NombreEtudiants == 0)
+            {
+                Console.WriteLine("Aucun étudiant enregistré.");
+                return;
+            }
+
+            Console.WriteLine("1. Par ordre alphabétique (nom)");
+            Console.WriteLine("2. Par note décroissante");
+            int choix = LireEntier("Votre choix : ", 1, 2);
+
+            List<Etudiant> resultat = choix == 1
+                ? gestion.TrierParNom()
+                : gestion.TrierParNoteDecroissante();
+
+            Console.WriteLine();
+            foreach (var e in resultat)
+                Console.WriteLine(e);
+        }
+
+        static void SupprimerEtudiant()
+        {
+            Console.Clear();
+            Console.WriteLine("=== SUPPRIMER UN ÉTUDIANT ===\n");
+
+            if (gestion.NombreEtudiants == 0)
+            {
+                Console.WriteLine("Aucun étudiant enregistré.");
+                return;
+            }
+
+            string critere = LireChaineNonVide("Nom ou matricule de l'étudiant à supprimer : ");
+            Etudiant e = gestion.TrouverParNomOuMatricule(critere);
+
+            if (e == null)
+            {
+                Console.WriteLine("Étudiant introuvable.");
+                return;
+            }
+
+            Console.Write($"Confirmez-vous la suppression de {e.Prenom} {e.Nom} ({e.Matricule}) ? (o/n) : ");
+            string rep = Console.ReadLine()?.Trim().ToLower();
+
+            if (rep == "o" || rep == "oui")
+            {
+                gestion.SupprimerEtudiant(e);
+                Console.WriteLine("Étudiant supprimé avec succès.");
+            }
+            else
+            {
+                Console.WriteLine("Suppression annulée.");
             }
         }
     }

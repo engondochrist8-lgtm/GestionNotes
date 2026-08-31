@@ -36,5 +36,11 @@ namespace GestionNotes
 
         public List<Etudiant> ObtenirRattrapage() =>
             etudiants.Where(e => e.Note.HasValue && e.Note.Value < 10).ToList();
+
+        public List<Etudiant> TrierParNom() =>
+            etudiants.OrderBy(e => e.Nom).ToList();
+
+        public List<Etudiant> TrierParNoteDecroissante() =>
+            etudiants.OrderByDescending(e => e.Note ?? -1).ToList();
     }
 }

@@ -42,5 +42,10 @@ namespace GestionNotes
 
         public List<Etudiant> TrierParNoteDecroissante() =>
             etudiants.OrderByDescending(e => e.Note ?? -1).ToList();
+
+        public bool SupprimerEtudiant(Etudiant e)
+        {
+            return etudiants.Remove(e);
+        }
     }
 }

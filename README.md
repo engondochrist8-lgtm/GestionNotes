@@ -17,9 +17,22 @@ d'une classe et leurs notes.
 9. Supprimer un étudiant
 10. Quitter
 
+## Structure du projet
+- `Etudiant.cs` — classe représentant un étudiant (Nom, Prénom, Matricule, Note, Mention).
+- `GestionClasse.cs` — logique métier : liste des étudiants, recherche, tri, statistiques, export.
+- `Program.cs` — menu console et gestion des saisies utilisateur.
+
+## Bonus implémentés
+- Export des étudiants admis dans un fichier texte (`etudiants_admis.txt`).
+- Calcul de la médiane des notes en plus de la moyenne.
+
 ## Lancer le projet
 ```
 dotnet run
 ```
 
-Ou ouvrir `GestionNotes.csproj` dans Visual Studio et lancer (F5).
+Ou ouvrir `GestionNotes.csproj` dans Visual Studio (Ouvrir > Projet/Solution) et lancer avec F5 / Ctrl+F5.
+
+## Prérequis
+.NET 8.0 SDK (ou supérieur). Si Visual Studio propose une autre version de framework cible,
+adapter la valeur `TargetFramework` dans `GestionNotes.csproj` (ex : `net6.0`).

@@ -71,5 +71,20 @@ namespace GestionNotes
 
             return (moyenne, meilleur, plusFaible, taux, mediane);
         }
+
+        // Bonus : exporte la liste des étudiants admis dans un fichier texte
+        public void ExporterAdmisVersFichier(string chemin)
+        {
+            var admis = ObtenirAdmis();
+            using (var writer = new System.IO.StreamWriter(chemin))
+            {
+                writer.WriteLine("=== LISTE DES ETUDIANTS ADMIS ===");
+                writer.WriteLine();
+                foreach (var e in admis)
+                    writer.WriteLine(e.ToString());
+                writer.WriteLine();
+                writer.WriteLine($"Total admis : {admis.Count}");
+            }
+        }
     }
 }

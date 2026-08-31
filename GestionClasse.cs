@@ -22,5 +22,13 @@ namespace GestionNotes
         }
 
         public List<Etudiant> ObtenirTous() => etudiants;
+
+        // Recherche par nom ou par matricule (insensible à la casse)
+        public Etudiant TrouverParNomOuMatricule(string critere)
+        {
+            return etudiants.FirstOrDefault(e =>
+                e.Matricule.Equals(critere, StringComparison.OrdinalIgnoreCase) ||
+                e.Nom.Equals(critere, StringComparison.OrdinalIgnoreCase));
+        }
     }
 }

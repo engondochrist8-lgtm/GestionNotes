@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Système de gestion des notes d'une classe
 
 Projet d'examen — Programmation C# (.NET) — SUP'INFO Dakar
@@ -36,3 +37,6 @@ Ou ouvrir `GestionNotes.csproj` dans Visual Studio (Ouvrir > Projet/Solution) et
 ## Prérequis
 .NET 8.0 SDK (ou supérieur). Si Visual Studio propose une autre version de framework cible,
 adapter la valeur `TargetFramework` dans `GestionNotes.csproj` (ex : `net6.0`).
+=======
+# GestionNotes
+>>>>>>> origin/main
